@@ -1,0 +1,13 @@
+name: build patched app
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: mon231/apkpatcher@master
+        with:
+          original-apk: 'original.apk'
+          output-apk: 'patched.apk'
+          frida-script: 'frida.js'
