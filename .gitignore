@@ -1,0 +1,5 @@
+*.jadxmd
+*.cache/
+*_smali/
+.vscode/
+*_SAP/
