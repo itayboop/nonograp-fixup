@@ -3,7 +3,7 @@
 ## setting up frida with frida-gadget
 
 First, lets check if we can recompile the app without problems...
-A usual usage of apktool & buildapp (thanks mon231) will generate a new working apk. how fun!
+A usual usage of [`apkmod`](https://github.com/mon231/apkpatcher) & buildapp (thanks mon231) will generate a new working apk. how fun!
 
 so lets start researching on how we can remove ads from nonogram
 
@@ -20,7 +20,7 @@ it succeeded and now we have an apk with frida gadget embed in it and we can fre
 
 ## il2CppDumper
 
-it is a unity app. so we will use a wonderful tool called `il2CppDumper (https://github.com/Perfare/Il2CppDumper)`.
+it is a unity app. so we will use a wonderful tool called `[`il2CppDumper`](https://github.com/Perfare/Il2CppDumper)`.
 we run `Il2CppDumper.exe libil2cpp.so global-metadata.dat cppDumperResult`. (`global-metadata.bat` can be found under `original_nonogram_apkpure/assets/bin/managed/Metadata`).
 
 we get a lot of intresting dump in `cppDumperResult`.
