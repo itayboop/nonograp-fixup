@@ -31,12 +31,7 @@ for example, this C# code:
 // Namespace: Easybrain.Nonogram.Scripts.Ads
 public class NonoAdsManager : AdsManager // TypeDefIndex: 3377
 {
-	// Fields
-	private readonly UserProfileManager _userProfileManager; // 0x70
-	private readonly IEasyUtils _easyUtils; // 0x78
-	[CompilerGenerated]
-	private Action<bool> AdsEnabledChanged; // 0x80
-
+    ...
 	// Properties
 	public bool IsAdsEnabled { get; set; }
 
@@ -55,26 +50,25 @@ public class NonoAdsManager : AdsManager // TypeDefIndex: 3377
 
 	// RVA: 0x123CDB0 Offset: 0x123CDB0 VA: 0x123CDB0
 	public void set_IsAdsEnabled(bool value) { }
+    
+    ...
+}
+```
 
-	// RVA: 0x1230200 Offset: 0x1230200 VA: 0x1230200
-	public void .ctor(UserProfileManager userProfileManager, IEasyUtils easyUtils) { }
-
-	// RVA: 0x123CE38 Offset: 0x123CE38 VA: 0x123CE38
-	private void OnInitCompleted() { }
-
-	// RVA: 0x123CDF0 Offset: 0x123CDF0 VA: 0x123CDF0
-	private void OnAdsStatusChanged(bool isEnabled) { }
-
-	// RVA: 0x123CFB4 Offset: 0x123CFB4 VA: 0x123CFB4
-	private void UpdateAdsState(bool isEnabled) { }
-
-	// RVA: 0x123D078 Offset: 0x123D078 VA: 0x123D078
-	private void OnAdsStateChanged(AdState state) { }
-
-	// RVA: 0x123D07C Offset: 0x123D07C VA: 0x123D07C
-	private void OnCrossPromoStateChange(CrossPromoState state) { }
-
-	// RVA: 0x123D080 Offset: 0x123D080 VA: 0x123D080
-	public void RegisterUserAction() { }
+or this:
+```C#
+// Namespace: Easybrain.Ads
+public enum AdState // TypeDefIndex: 10198
+{
+	// Fields
+	public int value__; // 0x0
+	public const AdState noads = 0;
+	public const AdState showing = 1;
+	public const AdState shown = 2;
+	public const AdState cached = 3;
+	public const AdState clicked = 4;
+	public const AdState completed = 5;
+	public const AdState closed = 6;
+	public const AdState idle = 7;
 }
 ```
