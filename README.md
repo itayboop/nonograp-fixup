@@ -1,4 +1,4 @@
-# monograp-fixup
+# nonograp-fixup
 
 ## Setting up frida with frida-gadget
 
