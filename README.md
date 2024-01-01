@@ -15,3 +15,8 @@ for some reason, after using `apktool d`, we cannot seem to find any static cons
 ```
 
 it succeeded and now we have an apk with frida gadget embed in it and we can freely research the app.
+
+it is a unity app. so we will use a wonderful tool called `il2CppDumper (https://github.com/Perfare/Il2CppDumper)`.
+we run `Il2CppDumper.exe libil2cpp.so global-metadata.dat cppDumperResult`. (`global-metadata.bat` can be found under `original_nonogram_apkpure/assets/bin/managed/Metadata`).
+
+we get a lot of intresting dump in `cppDumperResult`.

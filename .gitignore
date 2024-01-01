@@ -3,3 +3,7 @@
 *_smali/
 .vscode/
 *_SAP/
+cppDumperResult/
+il2cppDumper/
+*.dat
+*.so
