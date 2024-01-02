@@ -4,6 +4,11 @@
 .vscode/
 *_SAP/
 cppDumperResult/
+gadgetCppDumperResult/
 il2cppDumper/
 *.dat
 *.so
+*.id*
+*.i64
+*.nam
+*.til

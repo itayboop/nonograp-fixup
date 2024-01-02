@@ -119,3 +119,98 @@ public bool get_RemoveAds() { }
 ```
 
 always return true...
+
+looking a bit into the dumped C# code, we see the `SetRemoveAdsActive` function. with this following frida code:
+
+```js
+function awaitForCondition(callback) {
+    var i = setInterval(function () {
+      var addr = Module.findBaseAddress('libil2cpp.so');
+	  if (addr) {
+			console.log("found adress: " + addr)
+            clearInterval(i);
+            callback(+addr);
+        }
+    }, 0);
+}
+
+var libil2cpp_base = null;
+// SetRemoveAdsActive 0xB37CBC
+Java.perform(function () {
+    awaitForCondition(function (base) {
+        libil2cpp_base = ptr(base);
+
+		Interceptor.attach(libil2cpp_base.add(0xB37CBC), {
+			onEnter: function (args) {
+				args[1] = ptr(0x0);
+				console.log("SetRemoveAdsActive")
+			}
+		});
+	})
+})
+```
+
+that way, we patch `SetRemoveAdsActive` arg to get the boolean variable that determines if the button should be shown,
+and we see that it actually works and the Remove Ads button isnt shown. A cool approach should be to check the flow of the program to see who calls `SetRemoveAdsActive` with false parameter and try to emulate the behavior. We could do that with ida by loading symbols and checking xrefs but we need a time (and idapython lol) which we don't have at the moment.
+
+we kind of "satinu me'adereh" and we patched it to have infinite guesses in the app. the following code does that:
+
+```js
+Java.perform(function () {
+    awaitForCondition(function (base) {
+        libil2cpp_base = ptr(base);
+		const AddHintsRVA = 0xF47A38;
+		const GameplayDataControllerCTOR = 0xF47DC8;
+
+		const get_HintCount = new NativeFunction(libil2cpp_base.add(0xFA5694), 'int', ['pointer']);
+		const set_HintCount = new NativeFunction(libil2cpp_base.add(0xFA5694), 'void', ['pointer', 'int']);
+		const set_CurrentState = new NativeFunction(libil2cpp_base.add(0xFA568C), 'void', ['pointer', 'int']);
+		const AddHints = new NativeFunction(libil2cpp_base.add(AddHintsRVA), 'void', ['pointer', 'int']);
+
+		Interceptor.attach(libil2cpp_base.add(GameplayDataControllerCTOR), {
+			onEnter(args) {
+				this.addr = args[0];
+				console.log(this.addr);
+			},
+			onLeave(retval) {
+				AddHints(this.addr, 0x123);
+			}
+		});
+
+	})
+})
+```
+
+we created `addHints`, called the constructor, got its address and stored it in `this.addr` so we can call `AddHints` with the
+instance of the class we are using, and added as much as hints as we wanted. <br />
+Just for fun, we created another hook, to have infinite count of hints (note that it requires having more than 0 hints at first place)
+
+```js
+awaitForCondition(function (base) {
+	const libil2cpp_base = ptr(base);
+	const RemoveHintsRVA = 0xF47A5C;
+
+	Interceptor.replace(
+		libil2cpp_base.add(RemoveHintsRVA), 
+		new NativeCallback((this_addr, count_to_remove) => {}, 'void', ['pointer', 'int'])
+	);
+});
+```
+
+Then we did the final hook, remove ads from the app:
+```js
+awaitForCondition(function (base) {
+	const libil2cpp_base = ptr(base);
+	const get_IsAdsEnabled = 0x123C904;
+
+	Interceptor.attach(libil2cpp_base.add(get_IsAdsEnabled), {
+		onLeave(retval) {
+			retval.replace(0x0);
+		}
+	});
+});
+```
+
+In order to be more cool, we created a complete script which contains both no-ads logic and infinite-hints:
+```
+```
