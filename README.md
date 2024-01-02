@@ -76,29 +76,6 @@ public enum AdState // TypeDefIndex: 10198
 or this...:
 
 ```C#
-// Namespace: Easybrain.Nonogram.Scripts.Store
-public class ProductInfoType // TypeDefIndex: 2075
-{
-	// Fields
-	public const string StarterPack = "StarterPack";
-	public const string BankPack = "BankPack";
-	public const string RemoveAds = "RemoveAds";
-	public const string NBO = "NBO";
-
-	// Methods
-
-	// RVA: 0x1DD273C Offset: 0x1DD273C VA: 0x1DD273C
-	public void .ctor() { }
-}
-```
-
-IMO, going for the 3rd vector and trying to get `RemoveAds` is the best. so lets try it out.
-
-## Getting RemoveAds bundle
-
-if we take a look at this class:
-
-```C#
 // Namespace: Easybrain.Nonogram.Scripts.Features.InApp
 [Serializable]
 public class InAppBankItem // TypeDefIndex: 2467
@@ -130,6 +107,10 @@ public class InAppBankItem // TypeDefIndex: 2467
     ...
 }
 ```
+
+IMO, going for the 3rd vector and trying to get `RemoveAds` "bundle" is the best. so lets try it out.
+
+## Getting RemoveAds bundle
 
 maybe if we can make
 ```C#
