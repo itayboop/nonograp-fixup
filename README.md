@@ -72,3 +72,68 @@ public enum AdState // TypeDefIndex: 10198
 	public const AdState idle = 7;
 }
 ```
+
+or this...:
+
+```C#
+// Namespace: Easybrain.Nonogram.Scripts.Store
+public class ProductInfoType // TypeDefIndex: 2075
+{
+	// Fields
+	public const string StarterPack = "StarterPack";
+	public const string BankPack = "BankPack";
+	public const string RemoveAds = "RemoveAds";
+	public const string NBO = "NBO";
+
+	// Methods
+
+	// RVA: 0x1DD273C Offset: 0x1DD273C VA: 0x1DD273C
+	public void .ctor() { }
+}
+```
+
+IMO, going for the 3rd vector and trying to get `RemoveAds` is the best. so lets try it out.
+
+## Getting RemoveAds bundle
+
+if we take a look at this class:
+
+```C#
+// Namespace: Easybrain.Nonogram.Scripts.Features.InApp
+[Serializable]
+public class InAppBankItem // TypeDefIndex: 2467
+{
+	// Fields
+	[SerializeField]
+	protected int _coins; // 0x10
+	[SerializeField]
+	protected InAppBankItem.MarkerType _marker; // 0x14
+	[SerializeField]
+	protected bool _ads; // 0x18
+	[SerializeField]
+	protected InAppBankItem.InAppName _name; // 0x1C
+
+	// Properties
+	public int Coins { get; }
+	public InAppBankItem.MarkerType Marker { get; }
+	public bool RemoveAds { get; set; }
+	public InAppBankItem.InAppName Name { get; }
+
+	// Methods
+
+    ...
+	// RVA: 0x1F27250 Offset: 0x1F27250 VA: 0x1F27250
+	public bool get_RemoveAds() { }
+
+	// RVA: 0x1F27258 Offset: 0x1F27258 VA: 0x1F27258
+	public void set_RemoveAds(bool value) { }
+    ...
+}
+```
+
+maybe if we can make
+```C#
+public bool get_RemoveAds() { }
+```
+
+always return true...
