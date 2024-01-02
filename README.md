@@ -211,6 +211,29 @@ awaitForCondition(function (base) {
 });
 ```
 
-In order to be more cool, we created a complete script which contains both no-ads logic and infinite-hints:
-```
+In order to be more cool, we created a complete script which contains both no-ads logic and infinite-hints (we add 1 hint in each constructor call to make sure we never, somehow gets down to 0, even tho using a hint will never decrease):
+
+```js
+// apply "Remove Ads"
+Interceptor.attach(libil2cpp_base.add(get_IsAdsEnabled), {
+	onLeave(retval) {
+		retval.replace(0x0);
+	}
+});
+
+// using hint will not decrease hints count
+Interceptor.replace(
+	libil2cpp_base.add(RemoveHintsRVA), 
+	new NativeCallback((this_addr, count_to_remove) => {}, 'void', ['pointer', 'int'])
+);
+
+// make sure we have at least 1 hint every time
+Interceptor.attach(libil2cpp_base.add(GameplayDataControllerCTOR), {
+	onEnter(args) {
+		this.addr = args[0];
+	},
+	onLeave(retval) {
+		AddHints(this.addr, 0x1)
+	}
+});
 ```
