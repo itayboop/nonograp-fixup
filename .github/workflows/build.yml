@@ -8,6 +8,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: mon231/apkpatcher@master
         with:
-          original-apk: 'original_monogram_arm.apk'
+          original-apk: 'original_nonogram.apk'
           output-apk: 'patched.apk'
           frida-script: 'main.js'
