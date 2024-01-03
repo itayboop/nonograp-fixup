@@ -2,6 +2,8 @@
 
 ## Setting up frida with frida-gadget
 
+### disclaimer: this is for educational purpose only!
+
 First, lets check if we can recompile the app without problems...
 A usual usage of [`apkmod`](https://github.com/mon231/apkpatcher) & buildapp (thanks mon231) will generate a new working apk. how fun!
 
