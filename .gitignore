@@ -12,3 +12,4 @@ il2cppDumper/
 *.i64
 *.nam
 *.til
+*.keystore

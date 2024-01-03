@@ -237,3 +237,8 @@ Interceptor.attach(libil2cpp_base.add(GameplayDataControllerCTOR), {
 	}
 });
 ```
+
+we will use objection in order to inject the script with the frida gadget (since for some reason apkmod does not work...):
+`objection patchapk --source .\original_nonogram.apk -l .\main.js --gadget-config .\config.json`
+
+results in a patched, pwned APK. 
