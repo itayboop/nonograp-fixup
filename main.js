@@ -1,7 +1,7 @@
 function awaitForCondition(callback) {
 	var i = setInterval(function () {
-	  var addr = Module.findBaseAddress('libil2cpp.so');
-	  if (addr) {
+		var addr = Module.findBaseAddress('libil2cpp.so');
+		if (addr) {
 			clearInterval(i);
 			callback(+addr);
 		}
@@ -15,6 +15,7 @@ Java.perform(function () {
 		const RemoveHintsRVA = 0xF47A5C;
 		const GameplayDataControllerCTOR = 0xF47DC8;
 		const get_IsAdsEnabled = 0x123C904;
+		const UpdateAdsState = 0x123CFB4;
 
 		const get_HintCount = new NativeFunction(libil2cpp_base.add(0xFA5694), 'int', ['pointer']);
 		const set_HintCount = new NativeFunction(libil2cpp_base.add(0xFA5694), 'void', ['pointer', 'int']);
@@ -25,14 +26,21 @@ Java.perform(function () {
 		// apply "Remove Ads"
 		Interceptor.attach(libil2cpp_base.add(get_IsAdsEnabled), {
 			onLeave(retval) {
+				console.log('called');
 				retval.replace(0x0);
 			}
 		});
-		
+
+		Interceptor.attach(libil2cpp_base.add(UpdateAdsState), {
+			onEnter(args) {
+				args[0] = false;
+			}
+		});
+
 		// using hint will not decrease hints count
 		Interceptor.replace(
-			libil2cpp_base.add(RemoveHintsRVA), 
-			new NativeCallback((this_addr, count_to_remove) => {}, 'void', ['pointer', 'int'])
+			libil2cpp_base.add(RemoveHintsRVA),
+			new NativeCallback((this_addr, count_to_remove) => { }, 'void', ['pointer', 'int'])
 		);
 
 		// make sure we have at least 1 hint every time
@@ -41,8 +49,8 @@ Java.perform(function () {
 				this.addr = args[0];
 			},
 			onLeave(retval) {
-				AddHints(this.addr, 0x1)
+				AddHints(this.addr, 0x1);
 			}
 		});
-	})
-})
+	});
+});

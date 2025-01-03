@@ -5,6 +5,7 @@
 *_SAP/
 cppDumperResult/
 gadgetCppDumperResult/
+original_smali_check_lib
 il2cppDumper/
 *.dat
 *.so
